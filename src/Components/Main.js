@@ -49,16 +49,19 @@ class Main extends Component {
     }
   }
   workTimer(cb) {
-          this.setState({ workTimer: true, shortBreak: false, longBreak: false, timerHasStarted: false, minutes: 25, seconds: 0, totalSecondsRemaining: twentyFiveMinutesInSeconds, placeHolderZero: 0 });
-          clearInterval(cb);
+    this.stopTimer();
+    this.setState({ workTimer: true, shortBreak: false, longBreak: false, timerHasStarted: false, minutes: 25, seconds: 0, totalSecondsRemaining: twentyFiveMinutesInSeconds, placeHolderZero: 0 });
+    clearInterval(cb);
   }
 
   shortBreak(cb) {
+    this.stopTimer();
     this.setState({ workTimer: false, shortBreak: true, longBreak: false, timerHasStarted: false, minutes: 5, seconds: 0, totalSecondsRemaining: 60 * 5, placeHolderZero: 0 });
     clearInterval(cb);
   }
 
   longBreak(cb) {
+    this.stopTimer();
     this.setState({ workTimer: false, shortBreak: false, longBreak: true, timerHasStarted: false, minutes: 15, seconds: 0, totalSecondsRemaining: 60 * 15, placeHolderZero: 0 });
     clearInterval(cb);
   }
@@ -88,19 +91,23 @@ class Main extends Component {
     }
   }
 
+  stopTimer = () => {
+    this.setState({ totalSecondsRemaining: 0 })
+  }
+
   render() {
     let { minutes, seconds, placeHolderZero } = this.state;
     return (
       <div className="main-page">
-      <h1 id="title">Podomoro Timer</h1>
-      <div id="button-options">
-      <Button className="" type="primary" onClick={this.workTimer}>Work Timer</Button>
-      <Button className="" type="primary" onClick={this.shortBreak}>Short Break</Button>
-      <Button className="" type="primary" onClick={this.longBreak}>Long Break</Button>
-      </div>
+        <h1 id="title">Podomoro Timer</h1>
+        <div id="button-options">
+          <Button className="" type="primary" onClick={this.workTimer}>Work Timer</Button>
+          <Button className="" type="primary" onClick={this.shortBreak}>Short Break</Button>
+          <Button className="" type="primary" onClick={this.longBreak}>Long Break</Button>
+        </div>
         <h1>{minutes}:{placeHolderZero}{seconds}</h1>
         <Button className="" type="primary" onClick={this.startTimer}>Start Timer</Button>
-        <Button className="" type="primary" onClick={() => this.setState({totalSecondsRemaining: 0})}>Reset Timer</Button>
+        <Button className="" type="primary" onClick={this.stopTimer}>Reset Timer</Button>
       </div>
     );
   }
